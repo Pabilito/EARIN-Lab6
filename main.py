@@ -9,16 +9,13 @@ from sklearn.model_selection import ParameterGrid
 #Save logs to file
 log_path = ('Logs')
 
+#Variable for highscore storing
+highscore = -10000
+
 #Create an environment
 env = gym.make("CarRacing-v0")
 
 #Variables for grid search
-l_rate = [0.0001, 0.001, 0.01, 0.1]
-policy = ["MlpPolicy", "CnnPolicy"]
-n_steps = [1024, 2048, 4096]
-n_epochs = [5, 10, 20]
-highscore = -10000
-
 param_grid = {'l_rate': [0.0001, 0.001, 0.01, 0.1], 'policy' : ["MlpPolicy", "CnnPolicy"], 'n_steps': [1024, 2048, 4096], 'n_epochs': [5, 10, 20], 'timesteps': [1000, 10000, 100000]}
 
 grid = ParameterGrid(param_grid)
