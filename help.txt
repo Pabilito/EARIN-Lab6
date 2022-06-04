@@ -1,2 +1,0 @@
-#to work on arch put:
-export XDG_SESSION_TYPE=x11
