@@ -10,7 +10,7 @@ import timeit
 
 #Save logs to file
 log_path = ('Logs')
-filename = "Logs/Results3.csv"
+filename = "Logs/Results7.csv"
 
 #Variable for highscore storing
 highscore = -10000
@@ -28,7 +28,7 @@ iter = 0
 for params in grid:
 
 	iter += 1	
-	if iter<20:
+	if iter<59:
 		continue
 	
 	#Prepare model
