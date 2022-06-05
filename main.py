@@ -61,10 +61,10 @@ for params in grid:
 		print("SAVING TO FILE")
 		model.save('Logs/Model')
 
-''' 
+
 #THIS IS HOW LOADING MODEL FROM FILE WOULD LOOK LIKE
 model.load('Logs/Model')
 '''
-
+''' 
 #Close environment
 env.close()
