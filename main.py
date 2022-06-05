@@ -10,12 +10,7 @@ import timeit
 
 #Save logs to file
 log_path = ('Logs')
-filename = "Logs/Results.csv"
-
-#First row in csv file
-with open(filename,"w+") as my_csv:
-	csvWriter = csv.writer(my_csv,delimiter=';')
-	csvWriter.writerow(["l_rate","policy","n_steps", "n_epochs", "timesteps", "TRAINING TIME", "MEAN SCORE"])
+filename = "Logs/Results3.csv"
 
 #Variable for highscore storing
 highscore = -10000
@@ -31,7 +26,12 @@ iter = 0
 
 #Grid seatch on model
 for params in grid:
-	iter += 1
+
+	iter += 1	
+	if iter<20:
+		continue
+	
+	#Prepare model
 	model = PPO(params['policy'], env, verbose=0, learning_rate=params['l_rate'],tensorboard_log=log_path, seed=2137, n_steps=params['n_steps'], n_epochs=params['n_epochs'])
 
 	#Perform learning procedure
