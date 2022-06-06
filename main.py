@@ -63,8 +63,8 @@ for params in grid:
 
 
 #THIS IS HOW LOADING MODEL FROM FILE WOULD LOOK LIKE
-model.load('Logs/Model')
 '''
+model.load('Logs/Model')
 ''' 
 #Close environment
 env.close()
