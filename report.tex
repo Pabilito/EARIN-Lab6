@@ -118,7 +118,30 @@ Before main loop of the Grid Search was performed, there was created the $result
 \end{lstlisting}
 
 \section{Resuls \& conclusions}
+Firstly, as described the results from each iteration were saved to a file in a $.csv$ format. Further, the data was sorted descending starting with the highest mean score of the reward. The results for the best 30 networks are presented on the Fig.~\ref{fig:results}. As it can be easily concluded the $CnnPolicy$ gives significantly better results than the $MlpPolicy$ as in the best 30 results there are only 4 $MlpPolicy$ based results, none of which are in the best 10. The best result for the $CnnPolicy$ is 3 times better then the best result obtained with the $MlpPolicy$ which indicates that it is much better policy for this task. Furthermore, as it can be observed on the Fig.~\ref{fig:steps} the highest results for the whole data sets are for the number of step equal to 2048, however, more compressed results are obtained for the number of steps equal 4096. On the Fig.~\ref{fig:rate} there is presented mean score vs learning rate and on the Fig.~\ref{fig:time} there is presented learning rate vs time chart. The conclustions from those two figures are that for this task the best learning rate is the smallest one equal 0.0001 as not only it gives the best results but also it does not differ significantly from the duration of the execution from 100 higher learning rate which brings the worst results. As it can be easily concluded with the smaller learning rate the results significantly improve, however, as a consequence the execution time extends.
 
+\begin{figure}
+  \includegraphics[width=\textwidth]{Screenshots/best30.png}
+  \caption{30 Highest mean rewarded networks with their parameters}
+  \label{fig:results}
+\end{figure}
 
+\begin{figure}
+  \includegraphics[width=\textwidth]{Screenshots/mean_vs_time.png}
+  \caption{The mean award value vs number of steps}
+  \label{fig:steps}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{Screenshots/mean_vs_epochs.png}
+  \caption{The mean award value vs learning rate}
+  \label{fig:rate}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{Screenshots/rate_vs_time.png}
+  \caption{learning rate vs time}
+  \label{fig:time}
+\end{figure}
 
 \end{document}
