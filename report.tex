@@ -38,6 +38,14 @@ The aim of the experiment was to train reinforcement learning models based on Ca
 
 \section{Implementation}
 First of all, there was prepared environment using the openAI gym environment. It was decided to use 'CarRacing-v0' gym instead of 'CarRacing-v1' due to high availability of libraries supporting reinforcement learning.
+\subsection{Prerequisites}
+At the very beginning, there was a need to configure the environment to work properly with the $gym$ module as well as with the $stable\textunderscore baselines3$. Furthermore, in order to make all modules work, the proper version of each of them had to be installed. The final configuration of the environment is presented on the Fig.~\ref{fig:libraries}.
+\begin{figure}
+  \includegraphics[width=\textwidth]{Screenshots/libraries.png}
+  \caption{Configured environment parameters \& libraries}
+  \label{fig:libraries}
+\end{figure}
+
 \subsection{Model \& learning procedure}
 It was decided to use the PPO - Proximal Policy Optimization model from the $stable\textunderscore baselines3$ python module due to the ease of implementation and tuning. Furthermore, this module is implemented with the usage of the $TensorFlow$ module, hence the learning can be done with the GPU computational support. The implementation of the model creation with the parameters tuning is presented on the Listing.~\ref{lst:model}. Further, there was used the $learn$ method of the module which take the timestep as the parameter. The duration of the model learning is being saved as shown on the Listing.~\ref{lst:model}. Finally, there is a need to give a reward for the given simulation as well as the standard deviation. Therefore, there was used the $evaluate\textunderscore policy$ function also from the $stable\textunderscore baselines3$ module. As described in the subsection 3 the best model is being saved to a zip file.
 
@@ -63,7 +71,9 @@ The positive reward is being given to a car while it drives through the tiles on
   print("EVALUATING", iter, "/", len(grid))
   #Returns (Mean reward, Standard deviation)
   #Change render to true to see results
-  mean, std = evaluate_policy(model, env, n_eval_episodes=3, render=False)
+  mean, std = evaluate_policy(model, env,\
+                              n_eval_episodes=3, \
+                              render=False)
   print("Result:", mean)
 \end{lstlisting}
 
