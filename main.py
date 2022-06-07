@@ -8,6 +8,8 @@ from sklearn.model_selection import ParameterGrid
 import csv
 import timeit
 
+from copy import deepcopy
+
 #Save logs to file
 log_path = ('Logs')
 filename = "Logs/Results3.csv"
@@ -17,54 +19,68 @@ highscore = -10000
 
 #Create an environment
 env = gym.make("CarRacing-v0")
-
+''' 
+model = PPO.load('Logs/Model')
+model.set_env(env)
+obs = env.reset()
+while True:
+    action, _states = model.predict(obs)
+    obs, rewards, dones, info = env.step(action)
+    env.render()
+'''
 #Variables for grid search
-param_grid = {'l_rate': [0.0001, 0.001, 0.01, 0.1], 'policy' : ["MlpPolicy", "CnnPolicy"], 'n_steps': [1024, 2048, 4096], 'n_epochs': [5, 10, 20], 'timesteps': [1000, 10000]}
+#param_grid = {'l_rate': [0.0001, 0.001, 0.01, 0.1], 'policy' : ["MlpPolicy", "CnnPolicy"], 'n_steps': [1024, 2048, 4096], 'n_epochs': [5, 10, 20], 'timesteps': [1000, 10000]}
+param_grid = {'l_rate': [0.0001], 'policy' : ["CnnPolicy"], 'n_steps': [2048], 'n_epochs': [20], 'timesteps': [10000]}
 
 grid = ParameterGrid(param_grid)
 iter = 0
 
 #Grid seatch on model
 for params in grid:
+    print("hejo")
+    '''
+    iter += 1	
+    if iter<20:
+        continue
+    '''
+    #Prepare model
+    model = PPO(params['policy'], env, verbose=0, learning_rate=params['l_rate'],tensorboard_log=log_path, seed=2137, n_steps=params['n_steps'], n_epochs=params['n_epochs'])
+    
+    #Perform learning procedure
+    print("LEARNING ", iter, "/", len(grid))
+    start = timeit.default_timer()
+    model.learn(total_timesteps=params['timesteps'])
+    stop = timeit.default_timer()
+    l_time = "{0:0.3f}".format(stop - start)
 
-	iter += 1	
-	if iter<20:
-		continue
+    #Evaluate learning outcomes
+    print("EVALUATING ", iter, "/", len(grid))
+    #Returns (Mean reward, Standard deviation)
+    #Change render to true to see results
+    mean, std = evaluate_policy(model, env, n_eval_episodes=3, render=True)
+    print("Result: ", mean)
+    '''
+    #Save results
+    with open(filename,"a") as my_csv:
+        csvWriter = csv.writer(my_csv,delimiter=';')
+        csvWriter.writerow([params['l_rate'], params['policy'], params['n_steps'], params['n_epochs'], params['timesteps'], l_time, mean])
 	
-	#Prepare model
-	model = PPO(params['policy'], env, verbose=0, learning_rate=params['l_rate'],tensorboard_log=log_path, seed=2137, n_steps=params['n_steps'], n_epochs=params['n_epochs'])
+    #Check if it is currently the best model
+    if mean > highscore:
+        highscore = mean
+        print("New highscore: ", highscore)
+        #Save the best model to file in a .zip format
+        print("SAVING TO FILE")
+        model.save('Logs/Model')
+    '''
 
-	#Perform learning procedure
-	print("LEARNING ", iter, "/", len(grid))
-	start = timeit.default_timer()
-	model.learn(total_timesteps=params['timesteps'])
-	stop = timeit.default_timer()
-	l_time = "{0:0.3f}".format(stop - start)
 
-	#Evaluate learning outcomes
-	print("EVALUATING ", iter, "/", len(grid))
-	#Returns (Mean reward, Standard deviation)
-	#Change render to true to see results
-	mean, std = evaluate_policy(model, env, n_eval_episodes=3, render=False)
-	print("Result: ", mean)
-	
-	#Save results
-	with open(filename,"a") as my_csv:
-		csvWriter = csv.writer(my_csv,delimiter=';')
-		csvWriter.writerow([params['l_rate'], params['policy'], params['n_steps'], params['n_epochs'], params['timesteps'], l_time, mean])
-	
-	#Check if it is currently the best model
-	if mean > highscore:
-		highscore = mean
-		print("New highscore: ", highscore)
-		#Save the best model to file in a .zip format
-		print("SAVING TO FILE")
-		model.save('Logs/Model')
+
 
 
 #THIS IS HOW LOADING MODEL FROM FILE WOULD LOOK LIKE
-'''
-model.load('Logs/Model')
-''' 
+
+
+#model.load('Logs/Model')
 #Close environment
 env.close()
