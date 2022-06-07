@@ -47,9 +47,11 @@ At the very beginning, there was a need to configure the environment to work pro
 \end{figure}
 
 \subsection{Model \& learning procedure}
-It was decided to use the PPO - Proximal Policy Optimization model from the $stable\textunderscore baselines3$ python module due to the ease of implementation and tuning. Furthermore, this module is implemented with the usage of the $TensorFlow$ module, hence the learning can be done with the GPU computational support. The implementation of the model creation with the parameters tuning is presented on the Listing.~\ref{lst:model}. Further, there was used the $learn$ method of the module which take the timestep as the parameter. The duration of the model learning is being saved as shown on the Listing.~\ref{lst:model}. Finally, there is a need to give a reward for the given simulation as well as the standard deviation. Therefore, there was used the $evaluate\textunderscore policy$ function also from the $stable\textunderscore baselines3$ module. As described in the subsection 3 the best model is being saved to a zip file.
+It was decided to use the PPO - Proximal Policy Optimization model from the $stable\textunderscore baselines3$ python module due to the ease of implementation and tuning. Furthermore, this module is implemented with the usage of the $TensorFlow$ module, hence the learning can be done with the GPU computational support. The implementation of the model creation with the parameters tuning is presented on the Listing.~\ref{lst:model}. Further, there was used the $learn$ method of the module which take the timestep as the parameter. The duration of the model learning is being saved as shown on the Listing.~\ref{lst:model}.
 
-As during the reinforcement learning process the network is being trained with the reward, hence in this exercise the positive reward is being given to a car while it drives through the tiles on the track, and the negative reward is being given if the car drives through the tiles off the track.
+During the reinforcement learning process the network is being trained with the reward, hence in this exercise the positive reward is being given to a car while it drives through the tiles on the track, and the negative reward is being given if the car drives through the tiles off the track. It was implemented with the function $evaluate\textunderscore policy$, also from the $stable\textunderscore baselines3$ module, which returns the mean reward and the standard deviation. It is presented in the Listing.~\ref{lst:model}. Finally, as described in the subsection 3 the best model is being saved to a zip file.
+
+
 \begin{lstlisting}[caption={Model creation}, language=Python, label={lst:model}]
   #Prepare model
   model = PPO(params['policy'], \
