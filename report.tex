@@ -35,10 +35,11 @@
 %
 \begin{centering}
   {\huge
-  Final results can be observed here:\\
-  \href{https://www.youtube.com/watch?v=Ee54wHfOUyA}{Evaluation video}\\
-  \href{https://www.youtube.com/watch?v=ed-zkrwlk8g}{Game won video}\\
+    Final results can be observed here:\\
+    \href{https://www.youtube.com/watch?v=ed-zkrwlk8g}{Game won video}\\
+    \href{https://www.youtube.com/watch?v=Ee54wHfOUyA}{Evaluation video}\\
   }
+  (click on reference link to open the video)\\
 \end{centering}
 \section{Introduction}
 The aim of the experiment was to train reinforcement learning models based on CarRacing-v0 environment and subsequently assess and compare their results. There was prepered the environment using the openAI gym for the 'CarRacing-v0' problem. Further, there was created the Proximal Policy Optimization model which was further tuned with the usage of the Grid Search algorithm. Finally, the results are assessed and concluded.
@@ -56,7 +57,7 @@ At the very beginning, there was a need to configure the environment to work pro
 \subsection{Model \& learning procedure}
 It was decided to use the PPO - Proximal Policy Optimization model from the $stable\textunderscore baselines3$ python module due to the ease of implementation and tuning. Furthermore, this module is implemented with the usage of the $TensorFlow$ module, hence the learning can be done with the GPU computational support. The implementation of the model creation with the parameters tuning is presented on the Listing.~\ref{lst:model}. Further, there was used the $learn$ method of the module which take the timestep as the parameter. The duration of the model learning is being saved as shown on the Listing.~\ref{lst:model}.
 
-During the reinforcement learning process the network is being trained with the reward, hence in this exercise the positive reward is being given to a car while it drives through the tiles on the track, and the negative reward is being given if the car drives through the tiles off the track. It was implemented with the function $evaluate\textunderscore policy$, also from the $stable\textunderscore baselines3$ module, which returns the mean reward and the standard deviation. It is presented in the Listing.~\ref{lst:model}. Finally, as described in the subsection 3 the best model is being saved to a zip file.
+During the reinforcement learning process the network is being trained with the reward, hence in this exercise the positive reward is being given to a car while it drives through the tiles on the track, and the negative reward is being given if the car drives through the tiles off the track. The detailed reward policy is presented on the Fig.~\ref{fig:reward} It was implemented with the function $evaluate\textunderscore policy$, also from the $stable\textunderscore baselines3$ module, which returns the mean reward and the standard deviation. It is presented in the Listing.~\ref{lst:model}. Finally, as described in the subsection 3 the best model is being saved to a zip file.
 
 
 \begin{lstlisting}[caption={Model creation}, language=Python, label={lst:model}]
@@ -86,7 +87,11 @@ During the reinforcement learning process the network is being trained with the 
   print("Result:", mean)
 \end{lstlisting}
 
-
+\begin{figure}
+  \includegraphics[width=\textwidth]{Screenshots/rewards.png}
+  \caption{Reward policy}
+  \label{fig:reward}
+\end{figure}
 \subsection{Grid Search parameters tuning}
 For the scope of tuning there was used Grid-Search process the following parameters were checked:
 learning rate, policy, number of steps, number of epochs, and the timestep.
@@ -165,7 +170,7 @@ Firstly, as described the results from each iteration were saved to a file in a 
   \label{fig:time}
 \end{figure}
 
-Finally, the best model was rendered and tested. On the Fig.~\ref{fig:on_track} there can be seen the car being perfectly on track and it's score is increasing, and while it stays on this track it keeps it's position about in the middle of the track. Nevertheless, it struggles during the turns as it is very likely to go off the track and then spin around as presented on the Fig.~\ref{fig:off_track}, where although it has relatively high score, which was gained while being on track, it is lost. However, if it finally return on track it quickly stablize and keeps it's position in the middle of the track.
+Finally, the best model was rendered and tested. On the Fig.~\ref{fig:on_track} there can be seen the car being perfectly on track and it's score is increasing, and while it stays on this track it keeps it's position about in the middle of the track. For the further testing the best parameters from the Grid Search algorithm were constant and it was decided to experiment only with the timestep, due to empirical experience. It was observed that the best results were obtained for the timestep increased to $3.5 * 10^5$, which was gained with empirical method. Nevertheless, increase of the timestep not always results in the improved results. For instance with the timestep increased to the $10^6$ the decreases and in the end game is lost. Finally, the best score was equal to 916, and the game was won successfully as it can be observed in the game won video as well as on the Fig.~\ref{fig:game_won}
 \begin{figure}
   \includegraphics[width=\textwidth]{Screenshots/on_track.png}
   \caption{Initial on track ride}
@@ -173,9 +178,9 @@ Finally, the best model was rendered and tested. On the Fig.~\ref{fig:on_track} 
 \end{figure}
 
 \begin{figure}
-  \includegraphics[width=\textwidth]{Screenshots/off_track.png}
-  \caption{Off track ride}
-  \label{fig:off_track}
+  \includegraphics[width=\textwidth]{Screenshots/game_won.png}
+  \caption{Game won with the result}
+  \label{fig:game_won}
 \end{figure}
 
 \end{document}
